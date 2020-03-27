@@ -1,0 +1,65 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+mkdir -p /opt/chameleon
+
+# Clone script
+cd /opt/chameleon
+git clone https://github.com/ChameleonCloud/collectd-ceilometer-plugin.git
+cd collectd-ceilometer-plugin
+python setup.py install
+
+cat > /etc/collectd.d/collectd-gnocchi-plugin.conf <<EOF
+<LoadPlugin python>
+  Globals true
+</LoadPlugin>
+
+<Plugin python>
+    ModulePath "/usr/lib/python2.7/site-packages/collectd_openstack/"
+    LogTraces true
+    Interactive false
+    Import "collectd_openstack.gnocchi.plugin"
+
+    <Module "collectd_openstack.gnocchi.plugin">
+
+        # Verbosity True|False
+        VERBOSE False
+
+        # Batch size
+        BATCH_SIZE "16"
+
+        # Service endpoint addresses
+        OS_AUTH_URL ""
+
+        # Plugin address
+        CEILOMETER_URL_TYPE "publicURL"
+
+        # Plugin timeout in ms
+        CEILOMETER_TIMEOUT "10000"
+
+        # # Plugin user creds
+        OS_USERNAME "instance_metrics_writer"
+        OS_TOKEN ""
+        OS_TENANT_NAME ""
+        OS_PASSWORD ""
+
+        # Libvirt meter enabled
+        LIBVIRT_METER_ENABLED False
+      <UNITS>
+      </UNITS>
+    </Module>
+</Plugin>
+EOF
+
+# Disable the cpu plugin because it creates a huge number of metrics
+sed -i -e 's/^LoadPlugin cpu/#LoadPlugin cpu/' /etc/collectd.conf
+
+# Enable collectd to start on boot
+systemctl enable collectd
+
+exit 0
