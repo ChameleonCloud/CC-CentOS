@@ -65,9 +65,6 @@ esac
 # Clone the required repositories for Heat contextualization elements
 if [ ! -d tripleo-image-elements ]; then
   git clone https://git.openstack.org/openstack/tripleo-image-elements.git
-  sed -z 's/python-dev:\n//' tripleo-image-elements/elements/os-collect-config/package-installs.yaml
-  echo $'python-dev:\n  dib_python_version: 2\npython3-dev:\n  dib_python_version: 3' >> tripleo-image-elements/elements/os-collect-config/package-installs.yaml
-  sed -z 's/"python-dev": "python-devel",\n/"python-dev": "python-devel",\n"python3-dev": "python3-devel",\n/' tripleo-image-elements/elements/os-collect-config/pkg-map
 fi
 if [ ! -d heat-agents ]; then
   git clone https://git.openstack.org/openstack/heat-agents.git
