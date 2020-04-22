@@ -20,4 +20,4 @@ pip install \
   oslo.log \
   python-swiftclient
 
-pip2 install gnocchiclient
+pip3 install gnocchiclient
