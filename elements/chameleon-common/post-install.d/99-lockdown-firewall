@@ -7,7 +7,7 @@ set -eu
 set -o pipefail
 
 # Enable ufw
-ufw logging off
+ufw disable
 ufw --force enable
 
 # Establish firewall rules
