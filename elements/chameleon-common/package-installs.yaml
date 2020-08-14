@@ -69,4 +69,5 @@ systemtap:
 systemtap-client:
 systemtap-devel:
 systemtap-runtime:
+ufw:
 unzip:
