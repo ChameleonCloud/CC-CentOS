@@ -12,7 +12,7 @@ mkdir -p /opt/chameleon
 cd /opt/chameleon
 git clone https://github.com/ChameleonCloud/collectd-ceilometer-plugin.git
 cd collectd-ceilometer-plugin
-python setup.py install
+python3 setup.py install
 
 cat > /etc/collectd.d/collectd-gnocchi-plugin.conf <<EOF
 <LoadPlugin python>
@@ -20,7 +20,7 @@ cat > /etc/collectd.d/collectd-gnocchi-plugin.conf <<EOF
 </LoadPlugin>
 
 <Plugin python>
-    ModulePath "/usr/lib/python2.7/site-packages/collectd_openstack/"
+    ModulePath "/usr/lib/python3.6/site-packages/collectd_openstack/"
     LogTraces true
     Interactive false
     Import "collectd_openstack.gnocchi.plugin"

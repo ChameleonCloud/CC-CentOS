@@ -1,4 +1,4 @@
-ansible:
+#ansible:
 apr:
 apr-util:
 autoconf:
@@ -8,6 +8,7 @@ bison:
 byacc:
 bzip2:
 collectd:
+collectd-python:
 cscope:
 ctags:
 curl-devel:
@@ -19,7 +20,11 @@ elfutils:
 emacs-filesystem:
 flex:
 fuse-devel:
+# git is installed by source-repositories element with build-only
+# https://github.com/openstack/diskimage-builder/blob/master/diskimage_builder/elements/source-repositories/package-installs.yaml
+# just need to re-install git in post install phase
 git:
+  phase: post-install.d
 gcc:
 gcc-c++:
 gcc-gfortran:
@@ -38,6 +43,7 @@ libquadmath:
 libquadmath-devel:
 libstdc++-devel:
 libtool:
+libvirt-devel: # required by collectd openstack plugin
 libxml2-devel:
 linux-firmware:
 make:

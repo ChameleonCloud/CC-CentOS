@@ -7,8 +7,7 @@ set -eu
 set -o pipefail
 
 # Delete existing rules
-ufw --force enable
-for i in {4..1}; do ufw --force delete $i; done
+echo "y" | sudo ufw reset
 
 # Establish firewall rules
 ufw limit ssh

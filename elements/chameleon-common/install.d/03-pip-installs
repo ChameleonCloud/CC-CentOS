@@ -18,6 +18,7 @@ pip install \
   python-novaclient \
   python-openstackclient \
   oslo.log \
-  python-swiftclient
-
-pip3 install gnocchiclient
+  python-swiftclient \
+  gnocchiclient \
+  ansible \
+  libvirt-python

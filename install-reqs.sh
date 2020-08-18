@@ -11,7 +11,8 @@ fi
 
 source /etc/os-release
 dnf install -y epel-release
-dnf install -y qemu-img python3-pip kpartx
+dnf install -y qemu-img python3-pip kpartx ufw
+ufw --force enable
 
 ### Generic installs
 
