@@ -14,6 +14,8 @@ git clone https://github.com/ChameleonCloud/collectd-ceilometer-plugin.git
 cd collectd-ceilometer-plugin
 python3 setup.py install
 
+mkdir -p /etc/collectd.d/
+
 cat > /etc/collectd.d/collectd-gnocchi-plugin.conf <<EOF
 <LoadPlugin python>
   Globals true

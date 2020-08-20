@@ -19,4 +19,6 @@ ufw allow from 192.168.0.0/16
 ufw default deny incoming || true
 
 # Enable ufw
-systemctl enable ufw
+echo "ufw --force enable" >> /etc/rc.local
+# Ensure that /etc/rc.local is executable
+chmod +x /etc/rc.local
