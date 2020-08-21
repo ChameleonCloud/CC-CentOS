@@ -12,7 +12,16 @@ mkdir -p /opt/chameleon
 cd /opt/chameleon
 git clone https://github.com/ChameleonCloud/collectd-ceilometer-plugin.git
 cd collectd-ceilometer-plugin
-python3 setup.py install
+MAIN_PYTHON_VERSION="$(echo $DEFAULT_PYTHON_VERSION | cut -d'.' -f1)"
+PYTHON_LIB_DIR="$MAIN_PYTHON_VERSION.$(echo $DEFAULT_PYTHON_VERSION | cut -d'.' -f2)"
+if [ $MAIN_PYTHON_VERSION == "2" ]; then
+    python2 setup.py install
+elif [ $MAIN_PYTHON_VERSION == "3" ]; then
+    python3 setup.py install
+else
+    echo "Unknown python version: '$DEFAULT_PYTHON_VERSION'"
+    exit 1
+fi
 
 mkdir -p /etc/collectd.d/
 
@@ -22,7 +31,7 @@ cat > /etc/collectd.d/collectd-gnocchi-plugin.conf <<EOF
 </LoadPlugin>
 
 <Plugin python>
-    ModulePath "/usr/lib/python3.6/site-packages/collectd_openstack/"
+    ModulePath "/usr/lib/python$PYTHON_LIB_DIR/site-packages/collectd_openstack/"
     LogTraces true
     Interactive false
     Import "collectd_openstack.gnocchi.plugin"

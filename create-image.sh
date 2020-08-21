@@ -2,7 +2,7 @@
 set -ex
 
 export DISTRO_NAME=centos
-export DIB_RELEASE=8
+#export DIB_PYTHON_VERSION=3
 
 VARIANT="base"
 CUDA_VERSION=""
@@ -14,6 +14,9 @@ while [ "$1" != "" ]; do
     case $1 in
         -o | --output )         shift
                                 OUTPUT_FILE=$1
+                                ;;
+        -n | --release )        shift
+                                CENTOS_RELEASE=$1
                                 ;;
         -v | --variant )        shift
                                 VARIANT=$1
@@ -32,6 +35,8 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+
+export DIB_RELEASE=$CENTOS_RELEASE
 
 case "$VARIANT" in
 "base")
@@ -65,9 +70,16 @@ esac
 # Clone the required repositories for Heat contextualization elements
 if [ ! -d tripleo-image-elements ]; then
   git clone https://git.openstack.org/openstack/tripleo-image-elements.git
+  # update virtualenv
+  sed -i 's/virtualenv --setuptools/python3 -m venv/' tripleo-image-elements/elements/os-apply-config/install.d/os-apply-config-source-install/10-os-apply-config
+  sed -i 's/virtualenv --setuptools/python3 -m venv/' tripleo-image-elements/elements/os-collect-config/install.d/os-collect-config-source-install/10-os-collect-config
+  sed -i 's/virtualenv --setuptools/python3 -m venv/' tripleo-image-elements/elements/os-refresh-config/install.d/os-refresh-config-source-install/10-os-refresh-config
 fi
 if [ ! -d heat-agents ]; then
   git clone https://git.openstack.org/openstack/heat-agents.git
+  # use python3
+  sed -i 's/pip/pip3/' heat-agents/heat-config/install.d/heat-config-source-install/50-heat-config-soure
+  sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python3/' heat-agents/heat-config/bin/heat-config-notify
 fi
 
 # Forces diskimage-builder to install software using package rather than source
@@ -92,6 +104,8 @@ export AGENT_ELEMENTS="os-collect-config os-refresh-config os-apply-config"
 # appropriate hook to perform configuration. The element heat-config-script
 # installs a hook to perform configuration with shell scripts
 export DEPLOYMENT_BASE_ELEMENTS="heat-config heat-config-script"
+
+export DIB_INSTALLTYPE_pip_and_virtualenv=package
 
 if [ -f "$OUTPUT_FILE" ]; then
   echo "removing existing $OUTPUT_FILE"

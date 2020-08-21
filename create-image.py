@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import argparse
-import configparser
 import io
 import operator
 import os
@@ -12,6 +11,8 @@ def main():
 
     parser.add_argument('-r', '--revision', type=str,
         help='Revision to build with, usually of the format YYMM')
+    parser.add_argument('-n', '--release', type=str, default='8', choices=['7', '8'],
+        help='CentOS release')
     parser.add_argument('-v', '--variant', type=str,
         help='Image variant to build.') # extra elements defined in the .sh
     parser.add_argument('-c', '--cuda-version', type=str, default='cuda10',
@@ -22,9 +23,9 @@ def main():
     args = parser.parse_args()
 
     if args.variant == 'gpu':
-        os.execl('create-image.sh', 'create-image.sh', '--variant', args.variant, '--cuda', args.cuda_version, '--kvm', str(args.kvm).lower())
+        os.execl('create-image.sh', 'create-image.sh', '--release', args.release, '--variant', args.variant, '--cuda', args.cuda_version, '--kvm', str(args.kvm).lower())
     else:
-        os.execl('create-image.sh', 'create-image.sh', '--variant', args.variant, '--region', args.region, '--kvm', str(args.kvm).lower())
+        os.execl('create-image.sh', 'create-image.sh', '--release', args.release, '--variant', args.variant, '--region', args.region, '--kvm', str(args.kvm).lower())
 
 if __name__ == '__main__':
     sys.exit(main())

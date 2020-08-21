@@ -6,6 +6,16 @@ fi
 set -eu
 set -o pipefail
 
-echo "server ntp.tacc.utexas.edu iburst" >> /etc/chrony.conf
 
-systemctl enable chronyd
+if [ $DIB_RELEASE == "7" ]; then
+    yum remove -y chrony
+    yum install -y ntp
+    echo "server ntp.tacc.utexas.edu iburst" >> /etc/ntp.conf
+    systemctl enable ntpd
+elif [ $DIB_RELEASE == "8" ]; then
+    echo "server ntp.tacc.utexas.edu iburst" >> /etc/chrony.conf
+    systemctl enable chronyd
+else
+    echo "Unknown centos release name: '$DIB_RELEASE', only 7 and 8 recognized"
+    exit 1
+fi

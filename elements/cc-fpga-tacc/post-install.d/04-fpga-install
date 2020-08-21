@@ -1,0 +1,60 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+#set -o nounset
+set -o errexit
+set -o pipefail
+
+#############################################################
+# Pre-Installation
+#############################################################
+
+SCRIPTDIR=$(dirname $0)
+FPGA_INSTALL_FOLDER=/root/tmp
+mkdir -p $FPGA_INSTALL_FOLDER
+sudo cp -r $SCRIPTDIR/fpga $FPGA_INSTALL_FOLDER
+PKG_SOURCE=$FPGA_INSTALL_FOLDER/fpga
+
+#############################################################
+# Installation
+#############################################################
+
+# Install Altera RunTime Environment
+$YUM install -y $PKG_SOURCE/aocl-rte-16.0.0-1.x86_64.rpm
+
+# Create profile script
+cat > /etc/profile.d/altera.sh <<- EOM
+#!/bin/bash
+export ALTERAOCLSDKROOT="/opt/altera/aocl-rte"
+export AOCL_BOARD_PACKAGE_ROOT=\$ALTERAOCLSDKROOT/board/nalla_pcie
+export ACL_BOARD_VENDOR_PATH=\$AOCL_BOARD_PACKAGE_ROOT/
+source /opt/altera/aocl-rte/init_opencl.sh
+EOM
+
+source /etc/profile.d/altera.sh
+
+# Get Nallatech 385A Board Support Package
+#wget -qO- $PKG_SOURCE/nalla_pcie_16.0.2.tgz | tar -C $ALTERAOCLSDKROOT/board/ -xzvf -
+
+#wget $PKG_SOURCE/nalla_pcie_16.0.2.tgz -P /tmp
+tar -xzf $PKG_SOURCE/nalla_pcie_16.0.2.tgz -C $ALTERAOCLSDKROOT/board/
+
+# Build kernel module
+aocl install
+
+# Add startup script 
+chmod a+x /etc/profile.d/altera.sh
+echo "/etc/profile.d/altera.sh" >> /etc/rc.local
+
+# Ensure that /etc/rc.local is executable
+chmod +x /etc/rc.local
+
+#############################################################
+# Cleaning
+#############################################################
+
+sudo rm -r $PKG_SOURCE
+
+exit 0

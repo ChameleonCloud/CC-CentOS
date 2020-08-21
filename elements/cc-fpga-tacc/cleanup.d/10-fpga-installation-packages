@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+[ -n "$TMP_HOOKS_PATH" ]
+
+sudo rm -rf $TMP_HOOKS_PATH/post-install.d/fpga

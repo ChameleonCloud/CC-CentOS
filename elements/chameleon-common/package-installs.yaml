@@ -58,7 +58,9 @@ perl-Test-Harness:
 perl-Thread-Queue:
 perl-XML-Parser:
 python2:
-python2-devel:
+python-devel:
+  when: DIB_RELEASE = 7
+python3-devel:
 python-setuptools:
   dib_python_version: 2
 python3-setuptools:

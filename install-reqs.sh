@@ -7,13 +7,21 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-### OS-specific installs
-
+YUM=yum
 source /etc/os-release
-dnf install -y epel-release
-dnf install -y qemu-img python3-pip kpartx ufw
-ufw --force enable
+if [[ $ID = 'centos' ]]; then
+  if [[ $VERSION_ID = '8' ]]; then
+    YUM=dnf
+  fi
+  ### OS-specific installs
+  $YUM install -y epel-release
+  $YUM install -y qemu-img python3-pip kpartx ufw
+  ufw --force enable
+else
+  echo 'CnetOS is required, aborting.'
+  exit 1
+fi
 
 ### Generic installs
 
-pip install diskimage-builder
+pip3 install diskimage-builder

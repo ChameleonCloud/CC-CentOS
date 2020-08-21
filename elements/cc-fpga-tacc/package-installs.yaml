@@ -1,0 +1,5 @@
+gcc:
+gcc-c++:
+kernel-devel:
+kernel-headers:
+elfutils-libelf-devel:

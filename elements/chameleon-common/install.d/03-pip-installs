@@ -6,10 +6,7 @@ fi
 set -eu
 set -o pipefail
 
-ln -sf /usr/bin/python3 /usr/bin/python
-ln -sf /usr/bin/pip3 /usr/bin/pip
-
-pip install \
+pip3 install \
   python-cinderclient \
   python-glanceclient \
   python-heatclient \
@@ -22,3 +19,4 @@ pip install \
   gnocchiclient \
   ansible \
   libvirt-python
+ 

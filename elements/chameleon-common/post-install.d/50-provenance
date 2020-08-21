@@ -11,4 +11,4 @@ DIB_CC_PROVENANCE=${DIB_CC_PROVENANCE:-e30K} # e30K = '{}\n'
 CHAMELEON_FOLDER=/opt/chameleon
 mkdir -p $CHAMELEON_FOLDER
 echo $DIB_CC_PROVENANCE # debugging
-echo $DIB_CC_PROVENANCE | base64 -d | python -mjson.tool > $CHAMELEON_FOLDER/provenance.json
+echo $DIB_CC_PROVENANCE | base64 -d | python3 -mjson.tool > $CHAMELEON_FOLDER/provenance.json
