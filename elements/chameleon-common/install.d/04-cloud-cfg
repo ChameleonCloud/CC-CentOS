@@ -8,6 +8,8 @@ set -o pipefail
 
 # NOTE: UIDs MUST be strings/quoted
 cat > /etc/cloud/cloud.cfg <<'EOF'
+datasource_list: [ Ec2, None ]
+
 users:
  - default
  - name: ccadmin
@@ -100,14 +102,6 @@ system_info:
     templates_dir: /etc/cloud/templates
   ssh_svcname: sshd
 EOF
-
-echo "cloud-init init" >> /etc/rc.local
-# Ensure that /etc/rc.local is executable
-chmod +x /etc/rc.local
-systemctl enable cloud-init-local
-systemctl enable cloud-init
-systemctl enable cloud-config
-systemctl enable cloud-final
 
 exit 0
 
