@@ -15,7 +15,7 @@ MPICH_TMP_FOLDER=/root/tmp
 mkdir -p $MPICH_TMP_FOLDER
 
 # facter is used for hostfile generation in complex appliances
-yum install facter
+yum install -y facter
 
 #############################################################
 # Installation
