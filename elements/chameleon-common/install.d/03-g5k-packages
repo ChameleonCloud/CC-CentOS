@@ -15,7 +15,10 @@ gem install mixlib-cli -v '1.5.0'
 gem install mixlib-config -v '2.2.1'
 gem install mixlib-log -v '1.6.0'
 gem install mixlib-shellout -v '2.2.6'
-gem install ohai -v '<7'
+# skip dependency checks when installing ohai.
+# chef-utils requires Ruby version >= 2.6.0. 
+# centos has ruby version of 2.5.0
+gem install ohai -f -v '<7'
 gem install rspec -v '2.14.1'
 #ln -sf /root/.rbenv/shims/gem /bin/gem
 #ln -sf /root/.rbenv/shims/ruby /bin/ruby

@@ -17,6 +17,9 @@ if [[ $ID = 'centos' ]]; then
   $YUM install -y epel-release
   $YUM install -y qemu-img python3-pip kpartx ufw
   ufw --force enable
+  # libgcrypt-1.8.3 (default with latest centos 8) is not compatible with the latest qemu-img
+  # error message if not upgrading: qemu-img: Unable to initialize gcrypt
+  dnf upgrade -y libgcrypt
 else
   echo 'CnetOS is required, aborting.'
   exit 1
