@@ -19,7 +19,7 @@ if [[ $ID = 'centos' ]]; then
   ufw --force enable
   # libgcrypt-1.8.3 (default with latest centos 8) is not compatible with the latest qemu-img
   # error message if not upgrading: qemu-img: Unable to initialize gcrypt
-  dnf upgrade -y libgcrypt
+  $YUM upgrade -y libgcrypt
 else
   echo 'CnetOS is required, aborting.'
   exit 1
