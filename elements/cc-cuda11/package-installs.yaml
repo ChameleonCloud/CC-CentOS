@@ -1,0 +1,14 @@
+dkms:
+elfutils-libelf-devel:
+freeglut.x86_64:
+freeglut-devel.x86_64:
+kernel-devel:
+kernel-headers:
+libXi-devel.x86_64:
+#mesa-libGLES.x86_64:
+mesa-libGLES:
+mesa-libGL-devel.x86_64:
+mesa-libGLU-devel.x86_64:
+mesa-libGLw.x86_64:
+mesa-libGLw-devel.x86_64:
+wget:
