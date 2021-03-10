@@ -45,7 +45,6 @@ cloud_init_modules:
  - migrator
  - seed_random
  - bootcmd
- - write-files
  - growpart
  - resizefs
  - set_hostname
@@ -55,6 +54,7 @@ cloud_init_modules:
  - rsyslog
  - users-groups
  - ssh
+ - write-files
 
 cloud_config_modules:
  - emit_upstart
@@ -101,6 +101,18 @@ system_info:
     cloud_dir: /var/lib/cloud
     templates_dir: /etc/cloud/templates
   ssh_svcname: sshd
+
+write_files:
+ - path: /home/cc/.profile
+   content: |
+     if [ -f "$HOME/openrc" ]; then
+         source "$HOME/openrc"
+     fi
+   owner: cc:cc
+   append: true
+
+runcmd:
+ - su cc -c /etc/auto_generate_openrc
 EOF
 
 exit 0
