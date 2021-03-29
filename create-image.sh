@@ -74,6 +74,7 @@ if [ ! -d tripleo-image-elements ]; then
   sed -i 's/virtualenv --setuptools/python3 -m venv/' tripleo-image-elements/elements/os-apply-config/install.d/os-apply-config-source-install/10-os-apply-config
   sed -i 's/virtualenv --setuptools/python3 -m venv/' tripleo-image-elements/elements/os-collect-config/install.d/os-collect-config-source-install/10-os-collect-config
   sed -i 's/virtualenv --setuptools/python3 -m venv/' tripleo-image-elements/elements/os-refresh-config/install.d/os-refresh-config-source-install/10-os-refresh-config
+  sed -i '10i $OS_COLLECT_CONFIG_VENV_DIR/bin/pip install --upgrade pip' tripleo-image-elements/elements/os-collect-config/install.d/os-collect-config-source-install/10-os-collect-config
 fi
 if [ ! -d heat-agents ]; then
   git clone https://git.openstack.org/openstack/heat-agents.git

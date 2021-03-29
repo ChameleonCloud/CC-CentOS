@@ -6,6 +6,8 @@ fi
 set -eu
 set -o pipefail
 
+pip3 install --upgrade pip
+
 pip3 install \
   python-cinderclient \
   python-glanceclient \
@@ -18,5 +20,5 @@ pip3 install \
   python-swiftclient \
   gnocchiclient \
   ansible \
-  libvirt-python
- 
+  libvirt-python \
+  --ignore-installed PyYAML
