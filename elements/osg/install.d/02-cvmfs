@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Prepare the required OSG Yum repositories
+sudo yum install -y https://repo.opensciencegrid.org/osg/3.6/osg-3.6-el8-release-latest.rpm
+
+# Install CVMFS software
+sudo yum install -y osg-oasis
+
+# set up automount
+sudo systemctl enable autofs
+echo "/cvmfs /etc/auto.cvmfs" > /etc/auto.master.d/cvmfs.autofs
+
+# configure
+cat > /etc/cvmfs/default.local <<- 'EOM'
+
+CVMFS_REPOSITORIES="`echo $((echo oasis.opensciencegrid.org;echo cms.cern.ch;ls /cvmfs)|sort -u)|tr ' ' ,`"
+CVMFS_QUOTA_LIMIT=20000
+CVMFS_HTTP_PROXY="http://frontier-squid:3128"
+
+EOM

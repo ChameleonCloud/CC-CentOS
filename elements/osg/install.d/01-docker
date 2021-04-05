@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+YUM=yum
+
+if [[ $DIB_RELEASE = '8' ]]; then
+	YUM=dnf
+fi
+
+# set up the repository
+sudo $YUM install -y yum-utils
+sudo $YUM config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+# install docker engine
+sudo $YUM install -y docker-ce docker-ce-cli containerd.io
+
+# enable docker
+sudo systemctl enable docker
