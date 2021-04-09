@@ -9,6 +9,7 @@ CUDA_VERSION=""
 TMPDIR=`mktemp -d`
 mkdir -p $TMPDIR/common
 OUTPUT_FILE="$TMPDIR/common/$IMAGE_NAME.qcow2"
+SPECIAL_ELEMENT=""
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -30,6 +31,10 @@ while [ "$1" != "" ]; do
         -k | --kvm )            shift
                                 KVM=$1
                                 ;;
+        -s | --special )        shift
+                                SPECIAL_ELEMENT=$1
+                                ;;
+                                                       
         * )                     echo "Unrecognized option $1"
                                 exit 1
     esac
@@ -122,7 +127,7 @@ else
   SITE_ELEMENTS="chi"
 fi
 
-disk-image-create centos chameleon-common $ELEMENTS $SITE_ELEMENTS $EXTRA_ELEMENTS $AGENT_ELEMENTS $DEPLOYMENT_BASE_ELEMENTS -o $OUTPUT_FILE --no-tmpfs --root-label img-rootfs
+disk-image-create centos chameleon-common $ELEMENTS $SITE_ELEMENTS $EXTRA_ELEMENTS $AGENT_ELEMENTS $DEPLOYMENT_BASE_ELEMENTS $SPECIAL_ELEMENT -o $OUTPUT_FILE --no-tmpfs --root-label img-rootfs
 
 if [ -f "$OUTPUT_FILE.qcow2" ]; then
   mv $OUTPUT_FILE.qcow2 $OUTPUT_FILE

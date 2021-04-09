@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# script to launch osg container
+cat > /usr/local/sbin/osg-container-launcher <<- 'EOM'
+#!/bin/bash
+
+# create a bridge network
+sudo docker network create osg-net
+
+# Set Up Frontier Squid HTTP Caching Proxy
+sudo docker pull opensciencegrid/frontier-squid:release
+sudo docker run -d --rm --name frontier-squid --network osg-net -p 3128:3128 opensciencegrid/frontier-squid:release
+
+# download user data as osg.env
+mkdir /etc/osg
+curl http://169.254.169.254/openstack/latest/user_data > /etc/osg/osg.env
+
+# start pilot container
+sudo docker pull opensciencegrid/osgvo-docker-pilot:release
+sudo docker run -itd --rm --user osg \
+--cap-add=DAC_OVERRIDE --cap-add=SETUID --cap-add=SETGID --cap-add=SYS_ADMIN \
+--cap-add=SYS_CHROOT --cap-add=SYS_PTRACE --cap-add=CAP_DAC_READ_SEARCH \
+-v /cvmfs:/cvmfs:shared --network osg-net --env-file /etc/osg/osg.env \
+--name osg_pilot opensciencegrid/osgvo-docker-pilot:release
+
+EOM
+
+chmod a+x /usr/local/sbin/osg-container-launcher
+
+# create system service
+cat > /usr/lib/systemd/system/osg.service <<- 'EOM'
+[Unit]
+Description=OSG container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=no
+ExecStart=/usr/local/sbin/osg-container-launcher
+
+[Install]
+WantedBy=multi-user.target
+
+EOM
+
+sudo systemctl enable osg.service
