@@ -18,7 +18,5 @@ pip3 install \
   python-openstackclient \
   oslo.log \
   python-swiftclient \
-  gnocchiclient \
-  ansible \
   libvirt-python \
   --ignore-installed PyYAML

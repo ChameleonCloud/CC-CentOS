@@ -21,7 +21,7 @@ if [[ $ID = 'centos' ]]; then
   # error message if not upgrading: qemu-img: Unable to initialize gcrypt
   $YUM upgrade -y libgcrypt
 else
-  echo 'CnetOS is required, aborting.'
+  echo 'CentOS is required, aborting.'
   exit 1
 fi
 

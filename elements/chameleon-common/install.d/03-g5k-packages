@@ -9,8 +9,9 @@ set -o pipefail
 git clone -b centos8 https://github.com/ChameleonCloud/g5k-checks.git
 
 gem --version
-gem install popen4
-gem install rest-client
+gem install popen4 -v '0.1.2'
+gem install unf_ext -v '0.0.7.1'
+gem install rest-client -v '1.8.0'
 gem install mixlib-cli -v '1.5.0'
 gem install mixlib-config -v '2.2.1'
 gem install mixlib-log -v '1.6.0'

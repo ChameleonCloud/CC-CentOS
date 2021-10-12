@@ -1,4 +1,4 @@
-#ansible:
+ansible:
 apr:
 apr-util:
 autoconf:
@@ -35,6 +35,7 @@ hwloc: # required by g5k
 indent:
 intltool:
 json-c-devel:
+jq:
 libdwarf:
 libgfortran:
 libguestfs-tools:
@@ -57,14 +58,12 @@ perl-srpm-macros:
 perl-Test-Harness:
 perl-Thread-Queue:
 perl-XML-Parser:
-python2:
 python-devel:
-  when: DIB_RELEASE = 7
+  dib_python_version: 2
 python3-devel:
 python-setuptools:
   dib_python_version: 2
 python3-setuptools:
-  dib_python_version: 3
 redhat-lsb-core:
 redhat-rpm-config:
 rpm-build:
