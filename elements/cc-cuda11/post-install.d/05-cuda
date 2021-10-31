@@ -12,6 +12,16 @@ set -o pipefail
 # Pre-Installation
 #############################################################
 
+# Disable NOUVEAU http://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-nouveau
+cat > '/etc/modprobe.d/blacklist-nouveau.conf' <<- EOM
+blacklist nouveau
+options nouveau modeset=0
+EOM
+
+dracut --force
+
+rmmod nouveau
+
 NVIDIA_TMP_FOLDER=/root/tmp
 mkdir -p $NVIDIA_TMP_FOLDER
 
