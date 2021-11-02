@@ -7,7 +7,6 @@ VARIANT="base"
 CUDA_VERSION=""
 TMPDIR=`mktemp -d`
 mkdir -p $TMPDIR/common
-OUTPUT_FILE="$TMPDIR/common/$IMAGE_NAME.qcow2"
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -34,7 +33,6 @@ while [ "$1" != "" ]; do
 done
 
 export DIB_RELEASE=$CENTOS_RELEASE
-export DIB_PYTHON_VERSION=3
 
 case "$VARIANT" in
 "base")
@@ -65,6 +63,8 @@ case "$VARIANT" in
   exit 1
 esac
 
+OUTPUT_FILE="$TMPDIR/common/$IMAGE_NAME.qcow2"
+
 # Clone the required repositories for Heat contextualization elements
 if [ ! -d tripleo-image-elements ]; then
   git clone https://git.openstack.org/openstack/tripleo-image-elements.git
@@ -90,7 +90,7 @@ for i in "${ELEM[@]}"; do
   # https://github.com/openstack/tripleo-image-elements/blob/master/elements/os-apply-config/install.d/os-apply-config-source-install/10-os-apply-config#L6
   # virtualenv: error: too few arguments [--setuptools version]
   # update virtualenv
-  sed -i 's/virtualenv --setuptools/\$DIB_PYTHON_VIRTUALENV/' $ELEM_FILE
+  sed -i 's/virtualenv --setuptools/python3 -m venv/' $ELEM_FILE
   # error in anyjson setup command: use_2to3 is invalid
   # setuptools>=58 breaks support for use_2to3
   sed -i "s/'setuptools>=1.0'/'setuptools>=1.0,<58.0'/" $ELEM_FILE
@@ -110,7 +110,7 @@ if [ -f "$OUTPUT_FILE" ]; then
   rm -f "$OUTPUT_FILE"
 fi
 
-disk-image-create centos chameleon-common yum $ELEMENTS $EXTRA_ELEMENTS -o $OUTPUT_FILE --no-tmpfs --root-label img-rootfs
+disk-image-create centos chameleon-common $ELEMENTS $EXTRA_ELEMENTS -o $OUTPUT_FILE --no-tmpfs --root-label img-rootfs
 
 if [ -f "$OUTPUT_FILE.qcow2" ]; then
   mv $OUTPUT_FILE.qcow2 $OUTPUT_FILE
