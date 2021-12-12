@@ -9,7 +9,7 @@ import sys
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
 
-    parser.add_argument('-n', '--release', type=str, default='8', choices=['7', '8'],
+    parser.add_argument('-n', '--release', type=str, default='8', choices=['7', '8', '8-stream'],
         help='CentOS release')
     parser.add_argument('-v', '--variant', type=str,
         help='Image variant to build.') # extra elements defined in the .sh

@@ -6,12 +6,12 @@ fi
 set -eu
 set -o pipefail
 
-if [ $DIB_RELEASE == "7" ]; then
+if [[ $DIB_RELEASE = 7* ]]; then
     yum-config-manager --enable PowerTools
-elif [ $DIB_RELEASE == "8" ]; then
+elif [[ $DIB_RELEASE = 8* ]]; then
     $YUM config-manager --set-enabled powertools
 else
-    echo "Unknown centos release name: '$DIB_RELEASE', only 7 and 8 recognized"
+    echo "Unknown centos release name: '$DIB_RELEASE'"
     exit 1
 fi
 

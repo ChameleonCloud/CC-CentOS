@@ -103,14 +103,14 @@ sed -i '10i $OS_COLLECT_CONFIG_VENV_DIR/bin/pip install --upgrade pip' tripleo-i
 sed -i 's/pip/pip3/' heat-agents/heat-config/install.d/heat-config-source-install/50-heat-config-soure
 sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python3/' heat-agents/heat-config/bin/heat-config-notify
 
-ELEMENTS="vm $AGENT_ELEMENTS $DEPLOYMENT_BASE_ELEMENTS"
+ELEMENTS="vm block-device-efi dhcp-all-interfaces $AGENT_ELEMENTS $DEPLOYMENT_BASE_ELEMENTS"
 
 if [ -f "$OUTPUT_FILE" ]; then
   echo "removing existing $OUTPUT_FILE"
   rm -f "$OUTPUT_FILE"
 fi
 
-disk-image-create centos chameleon-common $ELEMENTS $EXTRA_ELEMENTS -o $OUTPUT_FILE --no-tmpfs --root-label img-rootfs
+disk-image-create centos chameleon-common $ELEMENTS $EXTRA_ELEMENTS -o $OUTPUT_FILE
 
 if [ -f "$OUTPUT_FILE.qcow2" ]; then
   mv $OUTPUT_FILE.qcow2 $OUTPUT_FILE

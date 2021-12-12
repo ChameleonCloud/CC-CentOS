@@ -6,6 +6,6 @@ fi
 set -eu
 set -o pipefail
 
-if [ $DIB_RELEASE == '7' ]; then
+if [[ $DIB_RELEASE = 7* ]]; then
     pip2 install pyyaml==5.4.1
 fi
