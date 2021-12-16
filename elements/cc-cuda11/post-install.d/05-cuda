@@ -20,7 +20,7 @@ EOM
 
 dracut --force
 
-rmmod nouveau
+rmmod nouveau || true
 
 NVIDIA_TMP_FOLDER=/root/tmp
 mkdir -p $NVIDIA_TMP_FOLDER
@@ -42,17 +42,17 @@ if [ "$CHROOT_KERNEL" != "$RUNNING_KERNEL" ]; then
 fi
 
 # Get the NVIDIA CUDA Toolkit for Centos
-wget https://developer.download.nvidia.com/compute/cuda/11.2.0/local_installers/cuda_11.2.0_460.27.04_linux.run
+wget https://developer.download.nvidia.com/compute/cuda/11.5.1/local_installers/cuda_11.5.1_495.29.05_linux.run
 
 # Install the NVIDIA CUDA Toolkit for Centos
-sudo sh cuda_11.2.0_460.27.04_linux.run --samples --toolkit --driver --silent --tmpdir $NVIDIA_TMP_FOLDER
+sudo sh cuda_11.5.1_495.29.05_linux.run --samples --toolkit --driver --silent --tmpdir $NVIDIA_TMP_FOLDER
 
 #############################################################
 # Post-Installation
 #############################################################
 
 PROFILE_SCRIPT=/etc/profile.d/cuda.sh
-CUDA_ROOT=/usr/local/cuda-11.2
+CUDA_ROOT=/usr/local/cuda-11.5
 
 # Mandatory Actions
 cat > $PROFILE_SCRIPT << EOM
