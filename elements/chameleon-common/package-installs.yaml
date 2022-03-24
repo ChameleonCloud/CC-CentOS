@@ -1,4 +1,9 @@
 ansible:
+  when:
+    - DIB_RELEASE != 8-stream
+ansible-core:
+  when:
+    - DIB_RELEASE = 8-stream
 apr:
 apr-util:
 autoconf:

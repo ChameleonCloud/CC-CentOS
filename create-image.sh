@@ -19,9 +19,6 @@ while [ "$1" != "" ]; do
         -v | --variant )        shift
                                 VARIANT=$1
                                 ;;
-        -c | --cuda )           shift
-                                CUDA_VERSION=$1
-                                ;;
         -g | --region )         shift
                                 REGION=$1
                                 ;;
@@ -40,12 +37,8 @@ case "$VARIANT" in
   EXTRA_ELEMENTS=""
   ;;
 "gpu")
-  if [ "$CUDA_VERSION" == "" ]; then
-    echo "You must specify a cuda version"
-  	exit 1
-  fi
-  IMAGE_NAME="CC-CentOS$DIB_RELEASE-${CUDA_VERSION^^}"
-  EXTRA_ELEMENTS="cc-$CUDA_VERSION"
+  IMAGE_NAME="CC-CentOS$DIB_RELEASE-CUDA"
+  EXTRA_ELEMENTS="cc-cuda"
   ;;
 "fpga")
   IMAGE_NAME="CC-CentOS$DIB_RELEASE-FPGA"
