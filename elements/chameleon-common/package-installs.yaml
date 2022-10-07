@@ -54,6 +54,7 @@ libxml2-devel:
 linux-firmware:
 make:
 neon:
+nfs-utils:
 nscd:
 openssl-devel:
 pakchois:

@@ -92,7 +92,7 @@ done
 # the following modifications are added for centos 7
 # the default python version for centos7 is python2
 # we can't set the default to python3, as yum doesn't work with python3
-sed -i '10i $OS_COLLECT_CONFIG_VENV_DIR/bin/pip install --upgrade pip' tripleo-image-elements/elements/os-collect-config/install.d/os-collect-config-source-install/10-os-collect-config
+sed -i '11i $OS_COLLECT_CONFIG_VENV_DIR/bin/pip install --upgrade pip' tripleo-image-elements/elements/os-collect-config/install.d/os-collect-config-source-install/10-os-collect-config
 sed -i 's/pip/pip3/' heat-agents/heat-config/install.d/heat-config-source-install/50-heat-config-soure
 sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python3/' heat-agents/heat-config/bin/heat-config-notify
 
