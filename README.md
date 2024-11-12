@@ -1,3 +1,5 @@
+*this repo is now archived, current build-defs can be found at https://github.com/ChameleonCloud/cc-images*
+
 # CC-CentOS
 
 This directory contains the scripts used to generate the Chameleon KVM and
